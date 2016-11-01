@@ -8,9 +8,14 @@
 FROM bugzilla/bugzilla-ci
 MAINTAINER David Lawrence <dkl@mozilla.com>
 
+ENV BUGZILLA_WWW /home/$BUGZILLA_USER/devel/htdocs/bugzilla
+
 # Distribution package installation
 COPY conf/rpm_list /
 RUN yum -y -q install `cat /rpm_list` && yum clean all
+
+# Apache setup
+COPY conf/bugzilla.conf /etc/httpd/conf.d/bugzilla.conf
 
 # Sudoers setup
 COPY conf/sudoers /etc/sudoers

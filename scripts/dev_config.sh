@@ -7,18 +7,23 @@ export PERL5LIB=$BUGZILLA_LIB
 export CPANM="sudo /usr/local/bin/cpanm --quiet --notest --skip-satisfied"
 
 # Global dependencies
+$CPANM --uninstall JSON::RPC
+$CPANM JSON::RPC@1.01
 $CPANM App::SimpleHTTPServer
 $CPANM Devel::NYTProf
 $CPANM Email::Sender;
 $CPANM File::Slurp
 $CPANM HTML::FormatText::WithLinks
 $CPANM IPC::System::Simple
-$CPANM JSON::RPC::Client
 $CPANM Net::RabbitMQ
 $CPANM Net::SMTP::SSL
 $CPANM REST::Client
 $CPANM Term::ReadKey
 $CPANM Text::MultiMarkdown
+
+sudo git clone https://github.com/mozilla-bteam/bmo.git $BUGZILLA_WWW/../bmo
+cd $BUGZILLA_WWW/../bmo
+$CPANM --installdeps --with-feature bmo .
 
 # Bugzilla dev manager configuration
 git clone https://github.com/dklawren/bugzilla-dev-manager.git \
@@ -39,6 +44,8 @@ git submodule update --init
 ln -sf $HOME/.vim/rc/vimrc $HOME/.vimrc
 git clone https://github.com/powerline/fonts.git $HOME/powerline-fonts
 cd $HOME/powerline-fonts && ./install.sh
+
+localedef -i en_US -f UTF-8 en_US.UTF-8
 
 # Remove CPAN build files to minimize disk usage
 rm -rf ~/.cpan*

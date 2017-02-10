@@ -17,4 +17,11 @@ services:
     volumes:
       - "/home/dkl/devel:/home/bugzilla/devel"
       - "/home/dkl/data/mysql:/var/lib/mysql"
-      - "/home/dkl/tmp:/tmp"
+      - "/home/dkl/data/tmp:/tmp"
+    links:
+      - elastic
+  elastic:
+    container_name: elastic
+    image: elasticsearch:1
+    volumes:
+      - "/home/dkl/data/elastic:/usr/share/elasticsearch/data"
